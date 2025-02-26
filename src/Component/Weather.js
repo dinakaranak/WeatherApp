@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import './Weather.css'
+import './Weather.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button, Container, Nav, Navbar, NavDropdown, Card } from 'react-bootstrap';
+import { Link, Navigate } from 'react-router-dom';
+
+// import back from '../Component/img.webp'
 const Weather = () => {
     const [city, setCity] = useState('');
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+
 
     const getWeather = async () => {
         if (!city) return;
@@ -17,14 +23,10 @@ const Weather = () => {
 
         try {
             const response = await fetch(url);
-            console.log(response);
-            
             if (!response.ok) {
                 throw new Error('City not found');
             }
             const data = await response.json();
-            console.log(data);
-            
             setWeather(data);
         } catch (error) {
             setError(error.message);
@@ -32,21 +34,58 @@ const Weather = () => {
             setLoading(false);
         }
     };
+    const handleLogout = async () => {
+        try {
+            // await signOut(auth);
+            localStorage.removeItem('isLoggedIn');
+            alert('Logged out successfully');
+            Navigate('/Signup');
+        } catch (error) {
+            console.error('Logout Error:', error.message);
+        }
+    };
 
     return (
-        <div style={{ textAlign: 'center', marginTop: '50px' }} className='div'>
+        <div className='full'>
+            <div>
+            <Navbar expand="lg" className="bg-body-tertiary nav">
+                <Container>
+                    <Navbar.Brand href="#">API Card Functions</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="#">Home</Nav.Link>
+                            <Nav.Link href="#">Contact</Nav.Link>
+                            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                                <NavDropdown.Item href="#">Action</NavDropdown.Item>
+                                <NavDropdown.Item href="#">Another action</NavDropdown.Item>
+                             </NavDropdown> 
+                        </Nav>
+                        <Link to='/Signup'>
+                            <Button variant="outline-primary" className="ms-3 btn-outline-primary">Sign Up / Login</Button>
+                        </Link>
+                        <Button variant="outline-danger" className="ms-3 btn-outline-danger" onClick={handleLogout}>Logout</Button>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+
+            </div>
+        <div className="weather-container">
             <h1>Weather App</h1>
             <input 
                 type="text" 
+                className="weather-input"
                 value={city} 
                 onChange={(e) => setCity(e.target.value)} 
                 placeholder="Enter city name" 
             />
-            <button onClick={getWeather}>Get Weather</button>
+            <button className="weather-button" variant="green" onClick={getWeather}>Get Weather</button>
+            
             {loading && <p>Loading...</p>}
             {error && <p style={{ color: 'red' }}>{error}</p>}
+            
             {weather && (
-                <div>
+                <div className="weather-info">
                     <h2>Weather in {weather.name}</h2>
                     <p>Temperature: {weather.main.temp}°C</p>
                     <p>Description: {weather.weather[0].description}</p>
@@ -54,6 +93,7 @@ const Weather = () => {
                     <p>Wind Speed: {weather.wind.speed} m/s</p>
                 </div>
             )}
+        </div>
         </div>
     );
 };
