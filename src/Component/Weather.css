@@ -1,6 +1,12 @@
 /* General Styling */
 .full{
     background-image: url(image-2.jpg);
+    height: 650px;
+}
+.logo{
+    height: 50px;
+    width: 100px;
+    margin-right: 50px;
 }
 .weather-container {
     text-align: center;
@@ -13,7 +19,11 @@
     font-size: 2rem;
     margin-bottom: 20px;
 }
-
+.text{
+    font-weight: 800;
+    color: rgb(227, 247, 253);
+    /* margin-bottom: 200px; */
+}
 .weather-input {
     width: 80%;
     max-width: 300px;
@@ -25,7 +35,8 @@
 }
 
 .weather-button {
-    margin-left: 10px;
+    margin-top: 40px;
+    margin-left: 20px;
     padding: 10px 15px;
     font-size: 1rem;
     background-color: #007bff;
@@ -58,6 +69,9 @@
     font-size: 1rem;
     margin: 5px 0;
 }
+.degree{
+    height: 100px;
+}
 
 /* Responsive Design */
 @media (max-width: 600px) {
@@ -71,6 +85,7 @@
     }
 
     .weather-button {
-        width: 100%;
+        width: 60%;
+        margin-right: 30px;
     }
 }
