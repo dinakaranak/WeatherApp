@@ -1,0 +1,108 @@
+/* General Styles */
+.signup-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.signup-title {
+    color: #007bff;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Form Inputs */
+.form-group {
+    text-align: left;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.form-control {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Buttons */
+.btn-submit {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+
+.btn-google {
+    width: 100%;
+    padding: 10px;
+    background-color: #db4437;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-google:hover {
+    background-color: #c1351d;
+}
+
+.toggle-btn {
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.toggle-btn:hover {
+    text-decoration: underline;
+}
+
+/* Error Message */
+.error-message {
+    font-size: 14px;
+    color: red;
+    margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .signup-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .signup-title {
+        font-size: 20px;
+    }
+
+    .form-control {
+        padding: 8px;
+    }
+
+    .btn-submit,
+    .btn-google {
+        padding: 8px;
+    }
+}

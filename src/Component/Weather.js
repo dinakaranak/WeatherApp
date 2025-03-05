@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import './Weather.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { Link, Navigate } from 'react-router-dom';
-import weath from '../Component/weath.webp'
-import degree from '../Component/degree.jpg'
-import unnamed from '../Component/unnamed.png'
-import Signup from './Signup';
+import { Button, Container, Nav, Navbar } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import weath from '../images/weath.webp';
+import degree from '../images/degree.jpg';
+import header from '../images/header-1.webp';
 import Contact from './Contact';
 
-// import back from '../Component/img.webp'
 const Weather = () => {
     const [city, setCity] = useState('');
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-
+    const navigate = useNavigate(); // Fix for Navigation
 
     const getWeather = async () => {
         if (!city) return;
@@ -39,76 +37,76 @@ const Weather = () => {
             setLoading(false);
         }
     };
-    const handleLogout = async () => {
-        try {
-            // await signOut(auth);
-            localStorage.removeItem('isLoggedIn');
-            alert('Logged out successfully');
-            Navigate('/Signup');
-        } catch (error) {
-            console.error('Logout Error:', error.message);
-        }
+
+    const handleLogout = () => {
+        localStorage.removeItem('isLoggedIn');
+        alert('Logged out successfully');
+        navigate('/Signup'); // Corrected Navigation
     };
 
     return (
-        <div>
-        <div className='full'>
-            <div>
-            <Navbar expand="lg" className="bg-body-tertiary nav">
+        <div className="weather-app">
+            {/* Navbar */}
+            <Navbar expand="lg" className="nav-bar">
                 <Container>
-                       <Navbar.Brand href="#">Weather</Navbar.Brand>
-                    <img src={weath} className='logo'></img>
+                    <Navbar.Brand href="#">Weather</Navbar.Brand>
+                    <img src={weath} className="logo" alt="Weather Logo" />
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="/Weather">Home</Nav.Link>
-                            <Nav.Link href="#">Contact</Nav.Link>
-                            {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="#">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#">Another action</NavDropdown.Item>
-                             </NavDropdown>  */}
+                            <Nav.Link as={Link} to="/">Home</Nav.Link>
+                            <Nav.Link as={Link} to="/Contact">Contact</Nav.Link>
                         </Nav>
-                        <Link to='/Signup'>
-                            <Button variant="outline-primary" className="ms-3 btn-outline-primary">Sign Up / Login</Button>
+                        <Link to="/Signup">
+                            <Button variant="outline-primary" className="ms-3">Sign Up / Login</Button>
                         </Link>
-                        <Button variant="outline-danger" className="ms-3 btn-outline-danger" onClick={handleLogout}>Logout</Button>
+                        <Button variant="outline-danger" className="ms-3" onClick={handleLogout}>Logout</Button>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            </div>
-        <div className="weather-container">
-            <h1 className='text'>Weather App</h1>
-            <input 
-                type="text" 
-                className="weather-input"
-                value={city} 
-                onChange={(e) => setCity(e.target.value)} 
-                placeholder="Enter city name" 
-            />
-            <button className="weather-button" variant="green" onClick={getWeather}>Get Weather</button>
             
-            {loading && <p>Loading...</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            
-            {weather && (
-                <div className="weather-info">
 
-                    <h2>Weather in {weather.name}</h2>
-                    <p>Temperature: {weather.main.temp}°C</p>
-                    <p>Description: {weather.weather[0].description}</p>
-                    <p>Humidity: {weather.main.humidity}%</p>
-                    <p>Wind Speed: {weather.wind.speed} m/s</p>
-                    <img src={degree} className='degree'></img>
+            {/* Header Image */}
+            <div className="header-container">
+                <img src={header} className="header-image" alt="Weather Header" />
+            </div>
+
+            {/* Weather Search Section */}
+            <div className="weather-container">
+                <h1 className="title">Weather App</h1>
+                <input 
+                    type="text" 
+                    className="weather-input"
+                    value={city} 
+                    onChange={(e) => setCity(e.target.value)} 
+                    placeholder="Enter city name" 
+                />
+                <button className="weather-button" onClick={getWeather}>Get Weather</button>
+
+                {loading && <p className="loading-text">Loading...</p>}
+                {error && <p className="error-text">{error}</p>}
+
+                {weather && (
+                    <div className="weather-info">
+                        <h2>Weather in {weather.name}</h2>
+                        <p>Temperature: {weather.main.temp}°C</p>
+                        <p>Description: {weather.weather[0].description}</p>
+                        <p>Humidity: {weather.main.humidity}%</p>
+                        <p>Wind Speed: {weather.wind.speed} m/s</p>
+                        <img src={degree} className="degree-image" alt="Degree Icon" />
+                    </div>
+                )}
+            </div>
+            <div><Contact /></div>
+
+            {/* Footer with Contact Details */}
+            <footer id="contact">
+                <div className="footer-container">
+                    <p>Contact Us: dinakaranak001@gmail.com | +91 99409 35315</p>
+                    <p>© 2025 Weather App. All Rights Reserved.</p>
                 </div>
-            )}
+            </footer>
         </div>
-        </div>
-        <div>
-           <Contact />
-          
-        </div>
-        </div>
-    
     );
 };
 

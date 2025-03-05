@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Form, Button } from 'react-bootstrap';
 import { auth, googleProvider } from './Firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
-// import './signup.css'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import './Signup.css';
 
 function Signup() {
     const [isSignup, setIsSignup] = useState(true);
@@ -46,7 +46,7 @@ function Signup() {
                 await createUserWithEmailAndPassword(auth, formData.email, formData.password);
                 localStorage.setItem('isLoggedIn', 'true');
                 alert('Signup Successfully');
-                // navigate('/Website');  // Uncomment if you'd like to navigate to the website after signup
+                // navigate('/Website');  // Uncomment if you'd like to navigate after signup
             } catch (error) {
                 setError(error.message);
             }
@@ -54,7 +54,7 @@ function Signup() {
             try {
                 await signInWithEmailAndPassword(auth, formData.email, formData.password);
                 localStorage.setItem('isLoggedIn', 'true');
-                navigate('/Weather');
+                navigate('/');
             } catch (error) {
                 setError('Invalid email or password');
             }
@@ -66,16 +66,16 @@ function Signup() {
             const result = await signInWithPopup(auth, googleProvider);
             alert(`Welcome ${result.user.displayName}`);
             localStorage.setItem('isLoggedIn', 'true');
-            navigate('/Weather');
+            navigate('/');
         } catch (error) {
             console.error('Google Login Error:', error.message);
         }
     };
 
     return (
-        <Container className="signup-container mt-5">
+        <Container className="signup-container">
             <h2 className="signup-title">{isSignup ? 'Sign Up' : 'Login'}</h2>
-            {error && <p className="text-danger error-message">{error}</p>}
+            {error && <p className="error-message">{error}</p>}
             <Form onSubmit={handleSubmit} className="signup-form">
                 {isSignup && (
                     <Form.Group className="form-group">
@@ -84,7 +84,7 @@ function Signup() {
                             type="text" 
                             name="username" 
                             onChange={handleChange} 
-                            className="form-control" 
+                            className="form-input" 
                         />
                     </Form.Group>
                 )}
@@ -95,7 +95,7 @@ function Signup() {
                         name="email" 
                         onChange={handleChange} 
                         required 
-                        className="form-control" 
+                        className="form-input" 
                     />
                 </Form.Group>
                 <Form.Group className="form-group">
@@ -105,7 +105,7 @@ function Signup() {
                         name="password" 
                         onChange={handleChange} 
                         required 
-                        className="form-control" 
+                        className="form-input" 
                     />
                 </Form.Group>
                 {isSignup && (
@@ -116,7 +116,7 @@ function Signup() {
                                 type="password" 
                                 name="confirmPassword" 
                                 onChange={handleChange} 
-                                className="form-control" 
+                                className="form-input" 
                             />
                         </Form.Group>
                         <Form.Group className="form-group">
@@ -125,13 +125,13 @@ function Signup() {
                                 type="text" 
                                 name="mobile" 
                                 onChange={handleChange} 
-                                className="form-control" 
+                                className="form-input" 
                             />
                         </Form.Group>
                     </>
                 )}
-                <Button type="submit" className="btn-submit mt-3">{isSignup ? 'Sign Up' : 'Login'}</Button>
-                <Button onClick={handleGoogleLogin} className="btn-google mt-3">Signup With Google</Button>
+                <Button type="submit" className="btn-submit">{isSignup ? 'Sign Up' : 'Login'}</Button>
+                <Button onClick={handleGoogleLogin} className="btn-google">Signup With Google</Button>
             </Form>
             <Button variant="link" onClick={() => setIsSignup(!isSignup)} className="toggle-btn">
                 {isSignup ? 'Already have an account? Login' : 'Create an account'}
