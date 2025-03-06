@@ -5,6 +5,7 @@ import { Container, Form, Button } from 'react-bootstrap';
 import { auth, googleProvider } from './Firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import './Signup.css';
+import axios from 'axios';
 
 function Signup() {
     const [isSignup, setIsSignup] = useState(true);
@@ -44,7 +45,8 @@ function Signup() {
             }
             try {
                 await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-                localStorage.setItem('isLoggedIn', 'true');
+                const response = await axios.post("http://localhost:8080/api/createadmin", formData);
+                console.log(response.data);
                 alert('Signup Successfully');
                 // navigate('/Website');  // Uncomment if you'd like to navigate after signup
             } catch (error) {

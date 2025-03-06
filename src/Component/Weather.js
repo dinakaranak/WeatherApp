@@ -13,7 +13,7 @@ const Weather = () => {
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const navigate = useNavigate(); // Fix for Navigation
+    const navigate = useNavigate(); 
 
     const getWeather = async () => {
         if (!city) return;
