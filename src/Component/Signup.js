@@ -4,25 +4,27 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Form, Button } from 'react-bootstrap';
 import { auth, googleProvider } from './Firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import './Signup.css';
 import axios from 'axios';
+import './Signup.css';
 
 function Signup() {
+    // const [mess, setMess] = useState("");
     const [isSignup, setIsSignup] = useState(true);
     const [formData, setFormData] = useState({
-        username: '',
+        name: '',
         email: '',
         password: '',
         confirmPassword: '',
         mobile: ''
     });
+
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
         const isLoggedIn = localStorage.getItem('isLoggedIn');
         if (isLoggedIn) {
-            // navigate('/');  // Uncomment if you'd like to navigate when logged in
+            navigate('/');
         }
     }, [navigate]);
 
@@ -35,7 +37,7 @@ function Signup() {
         setError('');
 
         if (isSignup) {
-            if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword || !formData.mobile) {
+            if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword || !formData.mobile) {
                 setError('All fields are required');
                 return;
             }
@@ -45,20 +47,37 @@ function Signup() {
             }
             try {
                 await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-                const response = await axios.post("http://localhost:8080/api/createadmin", formData);
-                console.log(response.data);
-                alert('Signup Successfully');
-                // navigate('/Website');  // Uncomment if you'd like to navigate after signup
+                axios.post('http://signup.dinakaran.shop/api/signup',formData)
+                .then(response =>{
+                    alert('sign up success')
+                })
+                
+                // localStorage.setItem('isLoggedIn', 'true');
+                // alert('Signup Successful');
+                // navigate('/');
             } catch (error) {
-                setError(error.message);
+                console.error("Signup Error:", error.message);
+                setError(error.response?.data?.error || error.message || "Something went wrong");
             }
         } else {
             try {
-                await signInWithEmailAndPassword(auth, formData.email, formData.password);
-                localStorage.setItem('isLoggedIn', 'true');
-                navigate('/');
+
+                axios.post('http://signup.dinakaran.shop/api/login', {
+                    email: formData.email,
+                    password: formData.password
+                })
+                .then(res => {
+                    alert('Login successfully');
+                    
+                    // Save login state to localStorage
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', formData.email); // Optional: Store user email
+                    
+                    navigate('/');
+                })
             } catch (error) {
-                setError('Invalid email or password');
+                console.error("Login Error:", error.message);
+                setError(error.response?.data?.error || "Invalid email or password");
             }
         }
     };
@@ -66,11 +85,13 @@ function Signup() {
     const handleGoogleLogin = async () => {
         try {
             const result = await signInWithPopup(auth, googleProvider);
-            alert(`Welcome ${result.user.displayName}`);
+            const user = result.user;
+            alert(`Welcome ${user.displayName}`);
             localStorage.setItem('isLoggedIn', 'true');
             navigate('/');
         } catch (error) {
             console.error('Google Login Error:', error.message);
+            setError("Google login failed. Please try again.");
         }
     };
 
@@ -81,12 +102,13 @@ function Signup() {
             <Form onSubmit={handleSubmit} className="signup-form">
                 {isSignup && (
                     <Form.Group className="form-group">
-                        <Form.Label className="form-label">Username</Form.Label>
+                        <Form.Label className="form-label">Name</Form.Label>
                         <Form.Control 
                             type="text" 
-                            name="username" 
+                            name="name" 
                             onChange={handleChange} 
                             className="form-input" 
+                            required
                         />
                     </Form.Group>
                 )}
@@ -118,6 +140,7 @@ function Signup() {
                                 type="password" 
                                 name="confirmPassword" 
                                 onChange={handleChange} 
+                                required
                                 className="form-input" 
                             />
                         </Form.Group>
@@ -128,6 +151,7 @@ function Signup() {
                                 name="mobile" 
                                 onChange={handleChange} 
                                 className="form-input" 
+                                required
                             />
                         </Form.Group>
                     </>

@@ -55,7 +55,7 @@ const Weather = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link as={Link} to="/">Home</Nav.Link>
-                            <Nav.Link as={Link} to="/Contact">Contact</Nav.Link>
+                            <Nav.Link as={Link} to="#">Contact</Nav.Link>
                         </Nav>
                         <Link to="/Signup">
                             <Button variant="outline-primary" className="ms-3">Sign Up / Login</Button>
@@ -97,7 +97,7 @@ const Weather = () => {
                     </div>
                 )}
             </div>
-            <div><Contact /></div>
+            {/* <div><Contact /></div> */}
 
             {/* Footer with Contact Details */}
             <footer id="contact">
