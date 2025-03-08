@@ -3,10 +3,10 @@ import './Weather.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import weath from '../images/weath.webp';
+import weath from '../images/weath.jpg';
 import degree from '../images/degree.jpg';
-import header from '../images/header-1.webp';
-import Contact from './Contact';
+import header from '../images/header-1.jpg';
+// import Contact from './Contact';
 
 const Weather = () => {
     const [city, setCity] = useState('');

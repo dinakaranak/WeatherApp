@@ -61,6 +61,7 @@ function Signup() {
             }
         } else {
             try {
+                await signInWithEmailAndPassword(auth, formData.email, formData.password);
 
                 axios.post('http://signup.dinakaran.shop/api/login', {
                     email: formData.email,
